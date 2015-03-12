@@ -1,0 +1,13 @@
+---
+:checks_add:
+- :yaml
+- :json
+- :rubocop
+- :ruby
+- :jslint
+- :before_all
+- :gemfile_path
+- :jslint
+:checks_remove:
+- :rails
+- :tabs
