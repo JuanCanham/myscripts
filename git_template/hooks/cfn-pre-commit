@@ -1,0 +1,24 @@
+#!/bin/bash
+
+function istemplate() {
+  version=$(jq '.AWSTemplateFormatVersion' $1)
+  [ "$version" != "null" ]
+}
+
+
+if git-rev-parse --verify HEAD >/dev/null 2>&1; then
+    against=HEAD
+else
+    against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+# This assumes your CloudFormation templates end in .template
+for filename in `git diff --cached --name-only --diff-filter=ACMRTUXB` ; do
+  filename="$(git rev-parse --show-toplevel)/$filename"
+  if ([[ $filename =~ .*\.(template|json) ]] && istemplate $filename)
+  then
+    aws cloudformation validate-template --template-body file://$filename > /dev/null
+    status=$(($status + $?))
+  fi
+done
+exit  $status

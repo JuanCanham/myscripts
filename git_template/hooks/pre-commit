@@ -1,0 +1,12 @@
+#!/bin/bash
+
+for hook in pre-commit.sample jish-pre-commit cfn-pre-commit; do
+	echo "running $hook..."
+	"$(git rev-parse --git-dir)/hooks/$hook"
+	status=$(($status + $?))
+done
+
+if [ $status -gt 0 ]; then
+	echo "at least $status hooks have failed"
+	exit 1
+fi
