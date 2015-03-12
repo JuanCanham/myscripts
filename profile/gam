@@ -1,0 +1,25 @@
+alias gam=~/gam/gam.py
+
+alias gami="gam info"
+alias gamc="gam create"
+alias gamu="gam update"
+alias gamp="gam print"
+
+alias gamig="gami group"
+alias gamcg="gamc group"
+alias gamug="gamu group"
+alias gampg="gamp groups"
+function gamga (){ gamug $1 add $2 $3 ; }
+function gamgr (){ gamug $1 remove $2 $3 ; }
+
+alias gamiu="gami user"
+alias gamcu="gamc user"
+alias gamuu="gamu user"
+alias gampu="gamp users"
+
+alias gamia="gami alias"
+alias gamca="gamc alias"
+alias gampa="gamp aliases"
+alias gamda="gam delete alias"
+
+alias gamid="gami domain"

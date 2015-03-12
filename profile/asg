@@ -1,0 +1,21 @@
+function stackasgs (){
+  aws cloudformation describe-stack-resources --stack-name $1 | jq '.StackResources[] | select(.ResourceType=="AWS::AutoScaling::AutoScalingGroup").PhysicalResourceId'| tr -d '"' | while read asg; do aws autoscaling $2-processes --auto-scaling-group-name $asg --scaling-processes ScheduledActions ; done
+}
+
+function monitorStack (){
+  cur=$(aws cloudformation describe-stacks --output text | grep $1 | cut -f 8)
+  last=$cur
+  until [ "$cur" != "$last" ]; do sleep 30 ; last=$cur; cur=$(aws cloudformation describe-stacks --output text | grep $1 | cut -f 8); done
+  echo -e '\a'
+  osascript -e "display notification \"$1\" with title \"STACK READY $1\""
+  say 'Stack Ready'
+  stackasgs $1 resume
+}
+
+function getasgIPs(){
+  aws ec2 describe-instances --instance-id $(getasgInstances "$1") | jq '.Reservations[].Instances[].NetworkInterfaces[].PrivateIpAddress'
+}
+
+function getasgInstances(){
+  aws autoscaling describe-auto-scaling-groups  --auto-scaling-group-names "$1" | jq '.AutoScalingGroups[].Instances[].InstanceId'
+}

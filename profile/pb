@@ -1,0 +1,3 @@
+alias pb="pbpaste | sed -e 'a\'" #add a newline to the end, otherwise pbpaste is no good for pasting into loops
+alias p2c="pb | tr '\t' ',' | pbcopy ; pb" #convert cliboard tabs to commas
+alias p2t="pb | tr ',' '\t' | pbcopy ; pb" #convert commas to tabs (e.g csv, to tsv (e.g paste to google docs))
