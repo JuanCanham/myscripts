@@ -16,4 +16,4 @@
   statuss = "!git logg ..@{u} && echo -- && git logg @{u}.. && git status"
   fetchs = "!git fetch && git statuss"
   pulls = "!git fetch && git statuss && git merge @{u}"
-  rebase = "!git fetch && git statuss && git rebase @{u}"
+  rebases = "!git fetch && git statuss && git rebase @{u}"
