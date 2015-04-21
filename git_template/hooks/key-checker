@@ -1,0 +1,9 @@
+#!/bin/bash
+change=$(git diff --cached)
+status=0
+for regex in 'AKIA[A-Z0-9]{16}' '-i password=' ; do
+  echo $change | grep -E --color $regex && $((status++))
+done
+
+[[ $status -gt 0 ]] && echo "Warning! You have added a key/password to this repo \n This is generally a bad idea (e.g iam roles should be used instead)"
+exit $status

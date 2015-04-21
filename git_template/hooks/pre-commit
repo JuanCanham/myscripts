@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for hook in pre-commit.sample jish-pre-commit cfn-pre-commit; do
+for hook in pre-commit.sample jish-pre-commit cfn-pre-commit key-checker; do
 	echo "running $hook..."
 	"$(git rev-parse --git-dir)/hooks/$hook"
 	status=$(($status + $?))
