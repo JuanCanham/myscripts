@@ -3,14 +3,10 @@ function tw (){
   open -a /Applications/TextWrangler.app $*
 }
 
-function proxyssh(){
-  ssh -A -tt -C $1 ssh -tt $2
-}
-
 alias mark="echo ============================================================================================================================================================================================================================================================="
 
-HISTSIZE=5000
-HISTFILESIZE=10000
+HISTSIZE=50000
+HISTFILESIZE=100000
 HISTIGNORE="&:[ ]*:exit"
 shopt -s histappend
 PROMPT_COMMAND="history -a"
@@ -18,8 +14,6 @@ PROMPT_COMMAND="history -a"
 alias gitc='git log --oneline --abbrev-commit --all --graph --decorate --color'
 
 export JAVA_HOME=`/usr/libexec/java_home`
-
-alias diffs='diff -dw --side-by-side --suppress-common-lines'
 
 for x in ~/.completion/*; do . $x ; done
 for x in ~/.profile/*; do . $x ; done

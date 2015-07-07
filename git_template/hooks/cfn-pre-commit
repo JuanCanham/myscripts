@@ -17,7 +17,7 @@ for filename in `git diff --cached --name-only --diff-filter=ACMRTUXB` ; do
   filename="$(git rev-parse --show-toplevel)/$filename"
   if ([[ $filename =~ .*\.(template|json) ]] && istemplate $filename)
   then
-    aws cloudformation validate-template --template-body file://$filename > /dev/null
+    aws --profile $AWS_PROFILE cloudformation validate-template --template-body file://$filename > /dev/null
     status=$(($status + $?))
   fi
 done

@@ -1,6 +1,16 @@
-export AWS_REGION=eu-west-1
-export AWS_DEFAULT_REGION=eu-west-1
+AWS_DEFAULT_REGION=eu-west-1
+AWS_REGION=eu-west-1
 
 complete -C '/usr/local/aws/bin/aws_completer' aws
+complete -C '/usr/local/aws/bin/aws_completer' awst
 
 alias shaws='env | grep -E "(AWS|STACK|EC2)"'
+function awsp () {
+export AWS_PROFILE=$1
+}
+
+alias aws='aws --profile-name "$AWS_PROFILE"'
+alias awst='aws --output text'
+
+alias awsall='grep -E "\[\S*\]" ~/.aws/credentials | tr -d [] | grep -- -dev | while read AWS_PROFILE ; do echo $AWS_PROFILE'
+complete -W "$(grep -E "\[\S*\]" ~/.aws/credentials | tr -d [])" awsp
