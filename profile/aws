@@ -1,16 +1,24 @@
 AWS_DEFAULT_REGION=eu-west-1
 AWS_REGION=eu-west-1
 
-complete -C '/usr/local/aws/bin/aws_completer' aws
-complete -C '/usr/local/aws/bin/aws_completer' awst
-
-alias shaws='env | grep -E "(AWS|STACK|EC2)"'
-function awsp () {
-export AWS_PROFILE=$1
-}
-
-alias aws='aws --profile-name "$AWS_PROFILE"'
 alias awst='aws --output text'
+complete -C '/usr/local/aws/bin/aws_completer' aws -a awst
 
-alias awsall='grep -E "\[\S*\]" ~/.aws/credentials | tr -d [] | grep -- -dev | while read AWS_PROFILE ; do echo $AWS_PROFILE'
+function awsp () { export AWS_DEFAULT_PROFILE=$1 ; }
 complete -W "$(grep -E "\[\S*\]" ~/.aws/credentials | tr -d [])" awsp
+
+alias aws-export='export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id) ; export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key) ; export AWS_DEFAULT_REGION=$(aws configure get region)'
+alias aws-export-clean='unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_DEFAULT_REGION AWS_DEFAULT_PROFILE'
+
+alias shaws='aws configure list'
+alias shaws-old='env | grep -E "(AWS|STACK|EC2)"'
+
+alias awsall='grep -E "\[\S*\]" ~/.aws/credentials | tr -d [] | grep -- -dev | while read AWS_DEFAULT_PROFILE; do echo $AWS_DEFAULT_PROFILE'
+
+alias ls-route53='aws route53 list-resource-record-sets --hosted-zone $(awst route53 list-hosted-zones --query HostedZones[0].Id ) | jq -r .ResourceRecordSets[].Name'
+alias ls-stacks-a="aws cloudformation list-stacks --stack-status-filter 'CREATE_FAILED' 'UPDATE_ROLLBACK_FAILED' 'UPDATE_ROLLBACK_IN_PROGRESS' 'CREATE_IN_PROGRESS' 'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS' 'ROLLBACK_IN_PROGRESS' 'UPDATE_COMPLETE' 'UPDATE_IN_PROGRESS' 'DELETE_FAILED' 'DELETE_IN_PROGRESS' 'ROLLBACK_COMPLETE' 'ROLLBACK_FAILED' 'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS' 'CREATE_COMPLETE' 'UPDATE_ROLLBACK_COMPLETE' | jq -r .StackSummaries[].StackName"
+alias ls-stacks='ls-stacks-a | grep -Ev [A-Z0-9]{12}'
+
+function find_key_owner () {
+  aws iam list-users | jq -r '.Users[].UserName' | parallel -j 0 "aws --output text iam list-access-keys --user-name {} | grep $1"
+}

@@ -5,3 +5,4 @@ alias p2t="pb | tr ',' '\t' | pbcopy ; pb" #convert commas to tabs (e.g csv, to 
 
 alias pbrub='TMP=$(gmktemp) && pb > $TMP && rubocop $TMP'
 alias pbruba='TMP=$(gmktemp) && pb > $TMP && rubocop -a $TMP ; cat $TMP | pbcopy && cat $TMP'
+alias pbx='pb | while read x ; do echo $x'

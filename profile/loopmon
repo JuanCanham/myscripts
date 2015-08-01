@@ -1,0 +1,15 @@
+alias notify='echo -e "\a"; osascript -e "display notification with title \"TERMINAL WORK DONE\""; say "work complete";'
+
+function onchange () {
+  wait=$1 ; shift
+  start=$($@) ; out=$start ; echo "$start"
+  while [ "$start" == "$out" ] ; do sleep $wait ; out=$($@) ;echo "$out" ; done
+  notify
+}
+
+function onsame () {
+  wait=$1 ; shift
+  start=$($@) ; echo "$start"
+  while [ "$start" != "$out" ] ; do sleep $wait ; out=$($@) ;echo "$out" ; done
+  notify
+}
