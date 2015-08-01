@@ -19,6 +19,10 @@ alias ls-route53='aws route53 list-resource-record-sets --hosted-zone $(awst rou
 alias ls-stacks-a="aws cloudformation list-stacks --stack-status-filter 'CREATE_FAILED' 'UPDATE_ROLLBACK_FAILED' 'UPDATE_ROLLBACK_IN_PROGRESS' 'CREATE_IN_PROGRESS' 'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS' 'ROLLBACK_IN_PROGRESS' 'UPDATE_COMPLETE' 'UPDATE_IN_PROGRESS' 'DELETE_FAILED' 'DELETE_IN_PROGRESS' 'ROLLBACK_COMPLETE' 'ROLLBACK_FAILED' 'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS' 'CREATE_COMPLETE' 'UPDATE_ROLLBACK_COMPLETE' | jq -r .StackSummaries[].StackName"
 alias ls-stacks='ls-stacks-a | grep -Ev [A-Z0-9]{12}'
 
+function ls-nest-stack-asgs () {
+  aws cloudformation describe-stack-resources --stack-name $(ls-stacks-a | grep -i "$1-$2") | jq -r '.StackResources[] | select(.ResourceType=="AWS::AutoScaling::AutoScalingGroup").PhysicalResourceId'
+}
+
 function find_key_owner () {
-  aws iam list-users | jq -r '.Users[].UserName' | parallel -j 0 "aws --output text iam list-access-keys --user-name {} | grep $1"
+  aws iam list-users | jq -r '.Users[].UserName' | parallel -j 0 "aws --output text iam list-access-keys --user-name {}" | grep "$1"
 }
