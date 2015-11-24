@@ -11,8 +11,9 @@
   stat = true
   autosquash = true
 [alias]
-	dfw = diff --ignore-space-change
-	logg = log --pretty=format:'%C(yellow)%H%Creset -%C(red)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date-order --graph
+  dfw = diff --ignore-space-change
+  logg = log --pretty=format:'%C(yellow)%H%Creset -%C(red)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --date-order --graph
+  last = "!git logg -n 1"
   statuss = "!git logg ..@{u} && echo -- && git logg @{u}.. && git status"
   fetchs = "!git fetch && git statuss"
   pulls = "!git fetch && git statuss && git merge @{u}"

@@ -1,4 +1,4 @@
-alias gam=~/gam/gam.py
+alias gam=~/GAM/gam.py
 
 alias gami="gam info"
 alias gamc="gam create"

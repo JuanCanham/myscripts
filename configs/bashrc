@@ -1,8 +1,3 @@
-function tw (){
-  touch $*
-  open -a /Applications/TextWrangler.app $*
-}
-
 alias mark="echo ============================================================================================================================================================================================================================================================="
 
 HISTSIZE=50000
@@ -13,9 +8,22 @@ PROMPT_COMMAND="history -a"
 
 alias gitc='git log --oneline --abbrev-commit --all --graph --decorate --color'
 
-export JAVA_HOME=`/usr/libexec/java_home`
-
 for x in ~/.completion/*; do . $x ; done
 for x in ~/.profile/*; do . $x ; done
 
-PS1="\$(if [[ \$EUID == 0 ]];then \"\[\033[0;31m\]\"; else echo \"\[\033[0;00m\]\";fi)[\!] \t \u@\h \w \$(if [[ \$? == 0 ]]; then echo \"\[\033[0;32m\]\"; else echo \"\[\033[0;31m\]\"; fi)\$\[\033[00m\]"
+PS1="\!:\w [\$?]\[$(tput sgr0)\]\[\033[38;5;2m\]\\$\[$(tput sgr0)\]"
+
+function tw2 () { kwrite "$@" &>/dev/null & }
+function twn () { kate -n "$@" &>/dev/null & }
+function tw () {
+	for f; do
+		if [ -d $f ] ; then
+			echo "$f is a folder"
+			tw $f/*
+		else
+			echo "opening $f"
+			kate $f &>/dev/null &
+		fi
+	done
+}
+alias wrx='while read x ; do '
