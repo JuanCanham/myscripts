@@ -27,3 +27,8 @@ function tw () {
 	done
 }
 alias wrx='while read x ; do '
+
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$PATH:$HOME/.rvm/bin"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
