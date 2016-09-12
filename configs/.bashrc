@@ -32,3 +32,4 @@ export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PATH="$PATH:$HOME/.rvm/bin"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+source /usr/local/etc/bash_completion.d/password-store
